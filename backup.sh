@@ -16,7 +16,7 @@
 #	$ sudo bash backup.sh
 #
 # Please help to simplify and develop new features
-# Narbeh - http://narbeh.org - narbeh.aj@gmail.com
+# Narbeh - http://narbeh.org - narbeh@protonmail.com
 #################################################################
 
 ################
