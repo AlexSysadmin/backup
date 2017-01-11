@@ -11,4 +11,6 @@ You need megatools in order to upload your backup file to MEGA. Download megatoo
 - Logging all the activities
 
 # Edit the configuration and run:
+```
 sudo bash backup.sh
+```
