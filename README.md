@@ -1,8 +1,7 @@
 # Backup
 Simple bash backup script
-
-# You need megatools in order to upload your backup file to MEGA
-# Download megatools from http://megatools.megous.com/
+You need megatools in order to upload your backup file to MEGA
+Download megatools from http://megatools.megous.com/
 
 # Simple backup script for GNU/Linux servers
 # Main features:
