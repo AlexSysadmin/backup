@@ -18,81 +18,100 @@
 # Please help to simplify and develop new features
 # Narbeh - http://narbeh.org - narbeh@protonmail.com
 #################################################################
+## Reading a Remote/External URLBased confighuration 
 
+bfn=backer.conf
+
+if [  -e  "backer.conf"  ]
+	then
+	echo "\n :: ~>  Config file exist ~> starting the backup proccess \n "
+else 
+	echo -e "\n         [  Config File Doesn't Exist  ] \n"
+    read -p "Enter External Configuration URL: " EXT_URL
+ 
+   
+    curl -o ${bfn} ${EXT_URL} 
+fi 
 ################
+#source ${bfn}
 # Configuration
 ################
+sleep 5
+
+
 
 # Server Name
-server_name="hostname"
+server_name=`grep "^server_name=" ${bfn} | cut -d= -f2`
 
 # Backup path
-backup_path="/tmp"
+backup_path=`grep "^backup_path=" ${bfn} | cut -d= -f2`
 
 # Script log file
-log_file="/var/log/backup.log"
+log_file=`grep "^log_file=" ${bfn} | cut -d= -f2`
 
 # Files to backup (Multi value)
-backup_files_enable="no"
+backup_files_enable=`grep "^backup_files_enable=" ${bfn} | cut -d= -f2`
 backup_files="/root/.bash_history /etc/passwd"
 
 # Directories to backup (Multi value)
-backup_dir_enable="no"
-backup_directories="/etc /var/log /usr/local"
+backup_dir_enable=`grep "^backup_dir_enable=" ${bfn} | cut -d= -f2`
+backup_directories=`grep "^backup_directories=" ${bfn}  | cut -d= -f2`
 
 # Copy to other media (Multi value)
-external_copy="no"
-external_storage="/mnt"
+external_copy=`grep "^external_copy=" ${bfn}  | cut -d= -f2`
+external_storage=`grep "^external_storage=" ${bfn}  | cut -d= -f2`
 
 # SCP to other server (Trusted servers for now)
-scp_enable="no"
-scp_server="1.2.3.4"
-scp_port="22"
-scp_username="root"
-scp_path="/media/backups"
+scp_enable=`grep "^scp_enable=" ${bfn} | cut -d= -f2`
+scp_server=`grep "^scp_server" ${bfn}  | cut -d= -f2`
+scp_port=`grep "^scp_port" ${bfn}  | cut -d= -f2`
+scp_username=`grep "^scp_username" ${bfn}  | cut -d= -f2`
+scp_path=`grep "^scp_path=" ${bfn} | cut -d= -f2`
 
 # Enable iptables backup
-iptables_backup="no"
+iptables_backup=`grep "^iptables_backup" ${bfn} | cut -d= -f2`
 
 # Upload to FTP server (Using curl command)
-ftp_enable="no"
-ftp_server="1.2.3.4"
-ftp_path="/backups"
-ftp_username=""
-ftp_password=""
+ftp_enable=`grep "^ftp_enable=" ${bfn}  | cut -d= -f2`
+ftp_server=`grep "^ftp_server=" ${bfn}  | cut -d= -f2`
+ftp_path=`grep "^ftp_path=" ${bfn}  | cut -d= -f2`
+ftp_username=`grep "^ftp_username=" ${bfn}  | cut -d= -f2`
+ftp_password=`grep "^ftp_password=" ${bfn}  | cut -d= -f2`
 
 # Send an email the result of the backup process
 # You should have sendmail or postfix installed
-send_email="no"
-email_to="test@gmail.com"
+send_email=`grep "^send_email=" ${bfn}  | cut -d= -f2`
+email_to=`grep "^email_to=" ${bfn}  | cut -d= -f2`
 
 # Upload to MEGA.nz if you have installed the client.
 # /Root/ is the main directory in MEGA.nz
-mega_enable="no"
-mega_email=""
-mega_pass=""
-mega_path="/Root/backups" # /Root/ should always be here.
+mega_enable=`grep "^mega_enable=" ${bfn}  | cut -d= -f2`
+mega_email=`grep "^mega_email=" ${bfn}  | cut -d= -f2`
+mega_pass=`grep "^mega_pass=" ${bfn}  | cut -d= -f2`
+mega_path=`grep "^mega_path=" ${bfn}  | cut -d= -f2`  #
 
 # Full MySQL dump (All Databases)
-mysql_backup="no"
-mysql_user=""
-mysql_pass=""
+mysql_backup=`grep "^mysql_backup=" ${bfn}  | cut -d= -f2`
+mysql_user=`grep "^mysql_user=" ${bfn}  | cut -d= -f2`
+mysql_pass=`grep "^mysql_pass=" ${bfn}  | cut -d= -f2`
 
 # Full PostgreSQL dump (All Databases)
-postgres_backup="no"
-postgres_user=""
-postgres_pass=""
-postgres_database=""
-postgres_host="localhost"
-postgres_port="5432"
+postgres_backup=`grep "^postgres_backup=" ${bfn}  | cut -d= -f2`
+postgres_user=`grep "^postgres_user=" ${bfn}  | cut -d= -f2`
+postgres_pass=`grep "^postgres_pass=" ${bfn}  | cut -d= -f2`
+postgres_database=`grep "^postgres_database=" ${bfn}  | cut -d= -f2`
+postgres_host=`grep "^postgres_host=" ${bfn}  | cut -d= -f2`
+postgres_port=`grep "^postgres_port=" ${bfn}  | cut -d= -f2`
 
-#################################################################
-#################################################################
-#################################################################
+################################################################
+################################################################
+################################################################
 
-################
-# Do the backup
-################
+###############
+#Do the backup
+###############
+
+
 
 case $1 in
 	"--fresh" )
@@ -107,6 +126,10 @@ color_fail='\033[0;31m'
 nc='\033[0m'
 hostname=$(hostname -s)
 date_now=$(date +"%Y-%m-%d %H:%M:%S")
+
+
+
+
 
 # Checking lock file
 test -r /var/backup_lock
@@ -124,6 +147,11 @@ echo -e "\n ${color}--- $date_now Backup started. \n${nc}"
 echo "$date_now Backup started." >> $log_file
 
 sleep 1
+
+
+
+
+
 
 # Backing up the files
 if [ $backup_files_enable = "yes" ]
@@ -147,8 +175,11 @@ then
         echo
 fi
 
-
 sleep 1
+
+
+
+
 
 # Backing up the directories
 if [ $backup_dir_enable = "yes" ]
@@ -166,6 +197,9 @@ fi
 
 sleep 1
 
+
+
+
 # MySQL backup
 if [ $mysql_backup = "yes" ]
 then
@@ -181,6 +215,11 @@ then
 fi
 
 sleep 1
+
+
+
+
+
 
 # PostgreSQL backup
 if [ $postgres_backup = "yes" ]
@@ -213,6 +252,9 @@ fi
 
 sleep 1
 
+
+
+
 ############################################################################################
 
 # Create TAR file
@@ -224,6 +266,8 @@ rm -rf $backup_path/Backup/
 sleep 1
 
 ############################################################################################
+
+
 
 # Copy to other storage
 if [ $external_copy = "yes" ]
@@ -246,6 +290,11 @@ fi
 
 sleep 1
 
+
+
+
+
+
 # SCP to other server
 if [ $scp_enable = "yes" ]
 then
@@ -256,6 +305,11 @@ then
 fi
 
 sleep 1
+
+
+
+
+
 
 # Upload to FTP server
 if [ $ftp_enable = "yes" ]
@@ -280,6 +334,10 @@ then
 	fi
 fi
 
+
+
+
+
 # Upload TAR file to MEGA.nz
 if [ $mega_enable = "yes" ]
 then
@@ -297,6 +355,10 @@ then
 	fi
 fi
 
+
+
+
+
 # Send a simple email notification
 if [ $send_email = "yes" ]
 then
@@ -311,6 +373,8 @@ echo -e "###########################################################"
 echo -e "\n"
 echo "$date_now Backup finished. Backup path: $backup_path/Full_Backup_${path_date}.tar.bz" >> $log_file
 echo "#######################" >> $log_file
+
+
 
 # Removing lock after successful backup
 rm /var/backup_lock
