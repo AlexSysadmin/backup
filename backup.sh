@@ -29,79 +29,85 @@ else
 	echo -e "\n         [  Config File Doesn't Exist  ] \n"
     read -p "Enter External Configuration URL: " EXT_URL
  
-   
     curl -o ${bfn} ${EXT_URL} 
 fi 
+
+sleep 5
+#Extracting Conf on by one / Function 
+EXT (arg){ 
+  `grep "^$arg=" ${bfn} | cut -d= -f2` 
+}
+
 ################
 #source ${bfn}
 # Configuration
 ################
-sleep 5
+
 
 
 
 # Server Name
-server_name=`grep "^server_name=" ${bfn} | cut -d= -f2`
+server_name=EXT server_name
 
 # Backup path
-backup_path=`grep "^backup_path=" ${bfn} | cut -d= -f2`
+backup_path=EXT backup_path
 
 # Script log file
-log_file=`grep "^log_file=" ${bfn} | cut -d= -f2`
+log_file=EXT log_file
 
 # Files to backup (Multi value)
-backup_files_enable=`grep "^backup_files_enable=" ${bfn} | cut -d= -f2`
+backup_files_enable=EXT backup_files_enable
 backup_files="/root/.bash_history /etc/passwd"
 
 # Directories to backup (Multi value)
-backup_dir_enable=`grep "^backup_dir_enable=" ${bfn} | cut -d= -f2`
-backup_directories=`grep "^backup_directories=" ${bfn}  | cut -d= -f2`
+backup_dir_enable=EXT backup_dir_enable
+backup_directories=EXT backup_directories
 
 # Copy to other media (Multi value)
-external_copy=`grep "^external_copy=" ${bfn}  | cut -d= -f2`
-external_storage=`grep "^external_storage=" ${bfn}  | cut -d= -f2`
+external_copy=EXT external_copy
+external_storage=EXT external_storage
 
 # SCP to other server (Trusted servers for now)
-scp_enable=`grep "^scp_enable=" ${bfn} | cut -d= -f2`
-scp_server=`grep "^scp_server" ${bfn}  | cut -d= -f2`
-scp_port=`grep "^scp_port" ${bfn}  | cut -d= -f2`
-scp_username=`grep "^scp_username" ${bfn}  | cut -d= -f2`
-scp_path=`grep "^scp_path=" ${bfn} | cut -d= -f2`
+scp_enable=EXT scp_enable
+scp_server=EXT scp_server
+scp_port=EXT scp_port
+scp_username=EXT scp_username
+scp_path=EXT scp_path
 
 # Enable iptables backup
-iptables_backup=`grep "^iptables_backup" ${bfn} | cut -d= -f2`
+iptables_backup=EXT iptables_backup
 
 # Upload to FTP server (Using curl command)
-ftp_enable=`grep "^ftp_enable=" ${bfn}  | cut -d= -f2`
-ftp_server=`grep "^ftp_server=" ${bfn}  | cut -d= -f2`
-ftp_path=`grep "^ftp_path=" ${bfn}  | cut -d= -f2`
-ftp_username=`grep "^ftp_username=" ${bfn}  | cut -d= -f2`
-ftp_password=`grep "^ftp_password=" ${bfn}  | cut -d= -f2`
+ftp_enable=EXT ftp_enable
+ftp_server=EXT ftp_server
+ftp_path=EXT ftp_path
+ftp_username=EXT ftp_username
+ftp_password=EXT ftp_password
 
 # Send an email the result of the backup process
 # You should have sendmail or postfix installed
-send_email=`grep "^send_email=" ${bfn}  | cut -d= -f2`
-email_to=`grep "^email_to=" ${bfn}  | cut -d= -f2`
+send_email=EXT send_email
+email_to=EXT email_to
 
 # Upload to MEGA.nz if you have installed the client.
 # /Root/ is the main directory in MEGA.nz
-mega_enable=`grep "^mega_enable=" ${bfn}  | cut -d= -f2`
-mega_email=`grep "^mega_email=" ${bfn}  | cut -d= -f2`
-mega_pass=`grep "^mega_pass=" ${bfn}  | cut -d= -f2`
-mega_path=`grep "^mega_path=" ${bfn}  | cut -d= -f2`  #
+mega_enable=EXT mega_enable
+mega_email=EXT mega_email
+mega_pass=EXT mega_pass
+mega_path=EXT mega_path
 
 # Full MySQL dump (All Databases)
-mysql_backup=`grep "^mysql_backup=" ${bfn}  | cut -d= -f2`
-mysql_user=`grep "^mysql_user=" ${bfn}  | cut -d= -f2`
-mysql_pass=`grep "^mysql_pass=" ${bfn}  | cut -d= -f2`
+mysql_backup=EXT mysql_backup
+mysql_user=EXT mysql_user
+mysql_pass=EXT mysql_pass
 
 # Full PostgreSQL dump (All Databases)
-postgres_backup=`grep "^postgres_backup=" ${bfn}  | cut -d= -f2`
-postgres_user=`grep "^postgres_user=" ${bfn}  | cut -d= -f2`
-postgres_pass=`grep "^postgres_pass=" ${bfn}  | cut -d= -f2`
-postgres_database=`grep "^postgres_database=" ${bfn}  | cut -d= -f2`
-postgres_host=`grep "^postgres_host=" ${bfn}  | cut -d= -f2`
-postgres_port=`grep "^postgres_port=" ${bfn}  | cut -d= -f2`
+postgres_backup=EXT postgres_backup
+postgres_user=EXT postgres_user
+postgres_pass=EXT postgres_pass
+postgres_database=EXT postgres_database
+postgres_host=EXT postgres_host
+postgres_port=EXT postgres_port
 
 ################################################################
 ################################################################
